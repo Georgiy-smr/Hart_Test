@@ -38,3 +38,11 @@ C:\Users\Альфапаскаль\Desktop\Hat - разработка\HartProtoco
 C:\Users\Альфапаскаль\Desktop\Hat - разработка\HartProtocol 2\HartProtocol\obj\Debug\HartProtocol.csproj.CoreCompileInputs.cache
 C:\Users\Альфапаскаль\Desktop\Hat - разработка\HartProtocol 2\HartProtocol\obj\Debug\HartProtocol.exe
 C:\Users\Альфапаскаль\Desktop\Hat - разработка\HartProtocol 2\HartProtocol\obj\Debug\HartProtocol.pdb
+C:\Users\Гоша и Аня\Hart_Test\HartProtocol\bin\Debug\HartProtocol.exe.config
+C:\Users\Гоша и Аня\Hart_Test\HartProtocol\bin\Debug\HartProtocol.exe
+C:\Users\Гоша и Аня\Hart_Test\HartProtocol\bin\Debug\HartProtocol.pdb
+C:\Users\Гоша и Аня\Hart_Test\HartProtocol\obj\Debug\HartProtocol.csproj.AssemblyReference.cache
+C:\Users\Гоша и Аня\Hart_Test\HartProtocol\obj\Debug\HartProtocol.csproj.SuggestedBindingRedirects.cache
+C:\Users\Гоша и Аня\Hart_Test\HartProtocol\obj\Debug\HartProtocol.csproj.CoreCompileInputs.cache
+C:\Users\Гоша и Аня\Hart_Test\HartProtocol\obj\Debug\HartProtocol.exe
+C:\Users\Гоша и Аня\Hart_Test\HartProtocol\obj\Debug\HartProtocol.pdb

@@ -17,13 +17,15 @@ namespace HartProtocol
         static DeviceHartManagement Manager;
         static void Main(string[] args)
         {
-            var serial = new Serial("COM6", 9600, Parity.None, StopBits.One);
+            var serial = new Serial("COM3", 9600, Parity.None, StopBits.One);
             serial.Connect();
             Manager = new DeviceHartManagement(serial);
             Manager.InitializeStatusChanged += Manager_InitializeStatusChanged;
             Manager.Initialize();
             Console.WriteLine("Initialization...");
-            Console.ReadKey();
+
+            while (!Manager.IsInitialized){ }
+
             if (Manager.Devices.Any()) 
             {
                 var device = Manager.Devices[0];
@@ -34,7 +36,6 @@ namespace HartProtocol
         private static void Manager_InitializeStatusChanged(bool result)
         {
             Console.WriteLine($"Success:{Manager.IsInitialized}.\nCount Connected Device:{Manager.Devices.Length}");
-            Console.ReadKey();
             if (Manager.IsInitialized)
             {
                 for (int i = 0; i < Manager.Devices.Length; i++)

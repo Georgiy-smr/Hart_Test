@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace HartProtocol.HartCommands
 {
-    [Flags]
-    public enum UnitPressure
+    
+    public enum UnitPressure : byte
     {
         inH2O = 0x1, //inches of water gaug 68 °F.
         inHg = 0x2, //inches of Hg gaug 0 °C (32 °F).
@@ -23,9 +23,9 @@ namespace HartProtocol.HartCommands
         Pa = 0x11,
         kPa = 0x12,
         torr = 0x13,
-        MPa = 0x237,
-        inH2O_2 = 0x238, //inches of water gaug 4 °C.
-        mmH2O_2 = 0x239, //mm of water gaug 4 °C.
+        MPa = 237,
+        inH2O_2 = 238, //inches of water gaug 4 °C.
+        mmH2O_2 = 239, //mm of water gaug 4 °C.
     }
     internal class Cmd_1_ReadingThePrimaryVariable : CommandConstructor
     {

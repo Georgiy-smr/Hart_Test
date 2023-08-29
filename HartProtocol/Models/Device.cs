@@ -1,4 +1,5 @@
-﻿using HartProtocol.Models.Base;
+﻿using HartProtocol.HartCommands;
+using HartProtocol.Models.Base;
 using HartProtocol.Services;
 using HartProtocol.Services.Interfaces;
 using System;
@@ -27,11 +28,14 @@ namespace HartProtocol.Models
         /// <summary>Обработчик входных данных </summary>
         public void Port_DataReceivedChanged(byte[] obj)
         {
-            //var fake_Ansver = FakeGenerator();
+            var fake_Ansver = FakeGenerator();
             switch (_CurrentCommandIndex)
             {
                 case 0:
-                    InitializeIdDevice(obj); 
+                    InitializeIdDevice(fake_Ansver); 
+                    break;
+                case 1:
+                    DefinitionPrimaryVariable(obj);
                     break;
             }
             _Port.DataReceivedChanged -= Port_DataReceivedChanged;
@@ -57,7 +61,22 @@ namespace HartProtocol.Models
             }
         }
 
+        #region 1_CMD
+        public void DefinitionPrimaryVariable(byte[] buff)
+        {
+            //проверки
+            //искать байт начала 
+            //добыть данные и применить их к свойству PrimeryUnit в Device
 
+
+            byte value = 0;
+
+            UnitPressure unit = new UnitPressure();
+            if (Enum.IsDefined(typeof(UnitPressure), value))
+                unit = (UnitPressure)value;
+
+        }
+        #endregion
 
 
 
