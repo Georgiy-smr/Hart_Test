@@ -1,0 +1,40 @@
+D:\старый компьютер\source\repos\MVVM\HartProtocol\HartProtocol\bin\Debug\HartProtocol.exe.config
+D:\старый компьютер\source\repos\MVVM\HartProtocol\HartProtocol\bin\Debug\HartProtocol.exe
+D:\старый компьютер\source\repos\MVVM\HartProtocol\HartProtocol\bin\Debug\HartProtocol.pdb
+D:\старый компьютер\source\repos\MVVM\HartProtocol\HartProtocol\obj\Debug\HartProtocol.csproj.AssemblyReference.cache
+D:\старый компьютер\source\repos\MVVM\HartProtocol\HartProtocol\obj\Debug\HartProtocol.csproj.SuggestedBindingRedirects.cache
+D:\старый компьютер\source\repos\MVVM\HartProtocol\HartProtocol\obj\Debug\HartProtocol.csproj.CoreCompileInputs.cache
+D:\старый компьютер\source\repos\MVVM\HartProtocol\HartProtocol\obj\Debug\HartProtocol.exe
+D:\старый компьютер\source\repos\MVVM\HartProtocol\HartProtocol\obj\Debug\HartProtocol.pdb
+C:\Users\Альфапаскаль\Desktop\Hat - разработка\HartProtocol\HartProtocol\bin\Debug\HartProtocol.exe.config
+C:\Users\Альфапаскаль\Desktop\Hat - разработка\HartProtocol\HartProtocol\bin\Debug\HartProtocol.exe
+C:\Users\Альфапаскаль\Desktop\Hat - разработка\HartProtocol\HartProtocol\bin\Debug\HartProtocol.pdb
+C:\Users\Альфапаскаль\Desktop\Hat - разработка\HartProtocol\HartProtocol\obj\Debug\HartProtocol.csproj.AssemblyReference.cache
+C:\Users\Альфапаскаль\Desktop\Hat - разработка\HartProtocol\HartProtocol\obj\Debug\HartProtocol.csproj.SuggestedBindingRedirects.cache
+C:\Users\Альфапаскаль\Desktop\Hat - разработка\HartProtocol\HartProtocol\obj\Debug\HartProtocol.csproj.CoreCompileInputs.cache
+C:\Users\Альфапаскаль\Desktop\Hat - разработка\HartProtocol\HartProtocol\obj\Debug\HartProtocol.exe
+C:\Users\Альфапаскаль\Desktop\Hat - разработка\HartProtocol\HartProtocol\obj\Debug\HartProtocol.pdb
+Z:\1 Личные папки\Смирнов Г.Д\Hat - разработка\HartProtocol\HartProtocol\bin\Debug\HartProtocol.exe.config
+Z:\1 Личные папки\Смирнов Г.Д\Hat - разработка\HartProtocol\HartProtocol\bin\Debug\HartProtocol.exe
+Z:\1 Личные папки\Смирнов Г.Д\Hat - разработка\HartProtocol\HartProtocol\bin\Debug\HartProtocol.pdb
+Z:\1 Личные папки\Смирнов Г.Д\Hat - разработка\HartProtocol\HartProtocol\obj\Debug\HartProtocol.csproj.AssemblyReference.cache
+Z:\1 Личные папки\Смирнов Г.Д\Hat - разработка\HartProtocol\HartProtocol\obj\Debug\HartProtocol.csproj.SuggestedBindingRedirects.cache
+Z:\1 Личные папки\Смирнов Г.Д\Hat - разработка\HartProtocol\HartProtocol\obj\Debug\HartProtocol.csproj.CoreCompileInputs.cache
+Z:\1 Личные папки\Смирнов Г.Д\Hat - разработка\HartProtocol\HartProtocol\obj\Debug\HartProtocol.exe
+Z:\1 Личные папки\Смирнов Г.Д\Hat - разработка\HartProtocol\HartProtocol\obj\Debug\HartProtocol.pdb
+C:\Users\Гоша и Аня\Desktop\Программирование\Hart\HartProtocol\HartProtocol\bin\Debug\HartProtocol.exe.config
+C:\Users\Гоша и Аня\Desktop\Программирование\Hart\HartProtocol\HartProtocol\bin\Debug\HartProtocol.exe
+C:\Users\Гоша и Аня\Desktop\Программирование\Hart\HartProtocol\HartProtocol\bin\Debug\HartProtocol.pdb
+C:\Users\Гоша и Аня\Desktop\Программирование\Hart\HartProtocol\HartProtocol\obj\Debug\HartProtocol.csproj.AssemblyReference.cache
+C:\Users\Гоша и Аня\Desktop\Программирование\Hart\HartProtocol\HartProtocol\obj\Debug\HartProtocol.csproj.SuggestedBindingRedirects.cache
+C:\Users\Гоша и Аня\Desktop\Программирование\Hart\HartProtocol\HartProtocol\obj\Debug\HartProtocol.csproj.CoreCompileInputs.cache
+C:\Users\Гоша и Аня\Desktop\Программирование\Hart\HartProtocol\HartProtocol\obj\Debug\HartProtocol.exe
+C:\Users\Гоша и Аня\Desktop\Программирование\Hart\HartProtocol\HartProtocol\obj\Debug\HartProtocol.pdb
+C:\Users\Альфапаскаль\Desktop\Hat - разработка\HartProtocol 2\HartProtocol\bin\Debug\HartProtocol.exe.config
+C:\Users\Альфапаскаль\Desktop\Hat - разработка\HartProtocol 2\HartProtocol\bin\Debug\HartProtocol.exe
+C:\Users\Альфапаскаль\Desktop\Hat - разработка\HartProtocol 2\HartProtocol\bin\Debug\HartProtocol.pdb
+C:\Users\Альфапаскаль\Desktop\Hat - разработка\HartProtocol 2\HartProtocol\obj\Debug\HartProtocol.csproj.AssemblyReference.cache
+C:\Users\Альфапаскаль\Desktop\Hat - разработка\HartProtocol 2\HartProtocol\obj\Debug\HartProtocol.csproj.SuggestedBindingRedirects.cache
+C:\Users\Альфапаскаль\Desktop\Hat - разработка\HartProtocol 2\HartProtocol\obj\Debug\HartProtocol.csproj.CoreCompileInputs.cache
+C:\Users\Альфапаскаль\Desktop\Hat - разработка\HartProtocol 2\HartProtocol\obj\Debug\HartProtocol.exe
+C:\Users\Альфапаскаль\Desktop\Hat - разработка\HartProtocol 2\HartProtocol\obj\Debug\HartProtocol.pdb

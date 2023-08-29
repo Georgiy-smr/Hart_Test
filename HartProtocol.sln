@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32825.248
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HartProtocol", "HartProtocol\HartProtocol.csproj", "{E37D0386-6180-479D-BF92-8E0CADCC5CAF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E37D0386-6180-479D-BF92-8E0CADCC5CAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E37D0386-6180-479D-BF92-8E0CADCC5CAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E37D0386-6180-479D-BF92-8E0CADCC5CAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E37D0386-6180-479D-BF92-8E0CADCC5CAF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7C0E2A1B-5782-4CD0-96CF-4AA18B39D631}
+	EndGlobalSection
+EndGlobal
