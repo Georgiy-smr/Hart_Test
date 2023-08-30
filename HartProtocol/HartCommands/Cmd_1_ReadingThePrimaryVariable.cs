@@ -32,7 +32,7 @@ namespace HartProtocol.HartCommands
         public Cmd_1_ReadingThePrimaryVariable(byte preamblesCount, FrameType frameType) : base(preamblesCount, frameType)
         {
         }
-        public override byte CommandIndex => 1;
+        public override byte CommandIndex => 2;
 
         
     }

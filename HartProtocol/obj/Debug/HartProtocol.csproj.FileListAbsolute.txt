@@ -46,3 +46,11 @@ C:\Users\Гоша и Аня\Hart_Test\HartProtocol\obj\Debug\HartProtocol.csproj
 C:\Users\Гоша и Аня\Hart_Test\HartProtocol\obj\Debug\HartProtocol.csproj.CoreCompileInputs.cache
 C:\Users\Гоша и Аня\Hart_Test\HartProtocol\obj\Debug\HartProtocol.exe
 C:\Users\Гоша и Аня\Hart_Test\HartProtocol\obj\Debug\HartProtocol.pdb
+C:\Users\Альфапаскаль\Documents\GitFork\Hart_Test\HartProtocol\bin\Debug\HartProtocol.exe.config
+C:\Users\Альфапаскаль\Documents\GitFork\Hart_Test\HartProtocol\bin\Debug\HartProtocol.exe
+C:\Users\Альфапаскаль\Documents\GitFork\Hart_Test\HartProtocol\bin\Debug\HartProtocol.pdb
+C:\Users\Альфапаскаль\Documents\GitFork\Hart_Test\HartProtocol\obj\Debug\HartProtocol.csproj.AssemblyReference.cache
+C:\Users\Альфапаскаль\Documents\GitFork\Hart_Test\HartProtocol\obj\Debug\HartProtocol.csproj.SuggestedBindingRedirects.cache
+C:\Users\Альфапаскаль\Documents\GitFork\Hart_Test\HartProtocol\obj\Debug\HartProtocol.csproj.CoreCompileInputs.cache
+C:\Users\Альфапаскаль\Documents\GitFork\Hart_Test\HartProtocol\obj\Debug\HartProtocol.exe
+C:\Users\Альфапаскаль\Documents\GitFork\Hart_Test\HartProtocol\obj\Debug\HartProtocol.pdb
