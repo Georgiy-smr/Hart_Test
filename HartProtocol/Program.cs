@@ -17,7 +17,7 @@ namespace HartProtocol
         static DeviceHartManagement Manager;
         static void Main(string[] args)
         {
-            var serial = new Serial("COM8", 64, Parity.None, StopBits.One);
+            var serial = new Serial("COM3", 64, Parity.None, StopBits.One);
             serial.Connect();
             Manager = new DeviceHartManagement(serial);
             Manager.InitializeStatusChanged += Manager_InitializeStatusChanged;
@@ -30,6 +30,8 @@ namespace HartProtocol
             {
                 var device = Manager.Devices[0];
                 device.ExecuteCommand(new Cmd_1_ReadingThePrimaryVariable(device.ReceivedPreamblesCount, FrameType.LongFrame));
+                Console.ReadKey();
+                Console.WriteLine(device.UnitPrimaryVariable);
             }
         }
 

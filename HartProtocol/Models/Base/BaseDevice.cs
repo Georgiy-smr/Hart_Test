@@ -112,7 +112,7 @@ namespace HartProtocol.Models.Base
         {
             if (buff is null) return;
 
-            for (int i = 0; i < buff.Length; i++)
+            for (int i = Array.IndexOf(buff, byte.MaxValue); i < buff.Length; i++)
             {
                 if (buff[i] != byte.MaxValue)
                 {

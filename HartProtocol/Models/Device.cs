@@ -28,11 +28,11 @@ namespace HartProtocol.Models
         /// <summary>Обработчик входных данных </summary>
         public void Port_DataReceivedChanged(byte[] obj)
         {
-            //var fake_Ansver = FakeGenerator();
+            var fake_Ansver = FakeGenerator();
             switch (_CurrentCommandIndex)
             {
                 case 0:
-                    InitializeIdDevice(obj); 
+                    InitializeIdDevice(fake_Ansver); 
                     break;
                 case 1:
                     DefinitionPrimaryVariable(obj);
@@ -56,26 +56,50 @@ namespace HartProtocol.Models
                     };
                     fake_bytes[23-1] = CrcXor.Calculate(fake_bytes, 4, 23 - 4 - 1);
                     return fake_bytes;
+                case 1:
+                    return new byte[23]
+                    {
+                        12, 255, 255, 255, 255, 255, 255, 134, 42, 11, 
+                        107, 207, 73, 1, 7, 0, 72, 10, 188, 199,
+                        163, 233, 63
+                    };
                 default:
                     return null;
             }
         }
 
         #region 1_CMD
+        public UnitPressure UnitPrimaryVariable
+        {
+            get;
+            set;
+        }
+
+
         public void DefinitionPrimaryVariable(byte[] buff)
         {
-            //проверки
+            buff = FakeGenerator();
+            
+            if (buff == null || buff.Length == 0 ) return;
+
+            for (int i = Array.IndexOf(buff, byte.MaxValue); i < buff.Length; i++)
+            {
+                if (buff[i] != byte.MaxValue)
+                {
+                    if (buff[i] == 134)
+                    {
+                        byte value = buff[17];
+                        if (Enum.IsDefined(typeof(UnitPressure), value))
+                            UnitPrimaryVariable = (UnitPressure)value;
+                        break;
+                    }
+                }
+            }
+
             //искать байт начала 
             //добыть данные и применить их к свойству PrimeryUnit в Device
-            //"0C FF FF FF FF FF FF 86 2A 0B 6B CF 49 01 07 00 48 0A BC C7 A3 E9 3F "
-            string id = Convectors.ByteToHex(buff);
-            byte value = 0;
-
-
-            UnitPressure unit = new UnitPressure();
-            if (Enum.IsDefined(typeof(UnitPressure), value))
-                unit = (UnitPressure)value;
-            
+            ////"0C FF FF FF FF FF FF 86 2A 0B 6B CF 49 01 07 00 48 0A BC C7 A3 E9 3F"
+            //string id = Convectors.ByteToHex(buff);
         }
         #endregion
 

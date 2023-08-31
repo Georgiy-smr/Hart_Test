@@ -10,19 +10,19 @@ namespace HartProtocol.HartCommands
     
     public enum UnitPressure : byte
     {
-        inH2O = 0x1, //inches of water gaug 68 °F.
-        inHg = 0x2, //inches of Hg gaug 0 °C (32 °F).
-        ftH2O = 0x3,//Foot water column 68 °F.
-        mmH2O = 0x4,//mm. water column 68 °F.
-        mmHg = 0x5, //mm. Hg column 0 °C (32 °F).
-        psi = 0x6,   // pound-force per square inch, lbf/in²
-        bar = 0x7,
-        mbar = 0x8,
-        gCm2 = 0x9,
-        kgCm2 = 0x10,
-        Pa = 0x11,
-        kPa = 0x12,
-        torr = 0x13,
+        inH2O = 1, //inches of water gaug 68 °F.
+        inHg = 2, //inches of Hg gaug 0 °C (32 °F).
+        ftH2O = 3,//Foot water column 68 °F.
+        mmH2O = 4,//mm. water column 68 °F.
+        mmHg = 5, //mm. Hg column 0 °C (32 °F).
+        psi = 6,   // pound-force per square inch, lbf/in²
+        bar = 7,
+        mbar = 8,
+        gCm2 = 9,
+        kgCm2 = 10,
+        Pa = 11,
+        kPa = 12,
+        torr = 13,
         MPa = 237,
         inH2O_2 = 238, //inches of water gaug 4 °C.
         mmH2O_2 = 239, //mm of water gaug 4 °C.

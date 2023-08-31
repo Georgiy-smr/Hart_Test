@@ -52,7 +52,7 @@ namespace HartProtocol.Services
         {
             for (int i = 0; i <= __DevicesCount; i++)
             {
-                Thread.Sleep(100);
+                
                 _Devices[i].ExecuteCommand(new RequestIndificationID_Command(5, FrameType.ShortFrame));
             }
             _Devices = _Devices.Where(d => d.Adress != null).ToArray();
