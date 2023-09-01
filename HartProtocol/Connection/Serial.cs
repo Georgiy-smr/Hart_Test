@@ -89,7 +89,18 @@ namespace HartProtocol.Connection
         public void Write(byte[] buffer, int offset, int length)
         {
             if (_serialPort is null) return;
-            _serialPort.Write(buffer, offset, length);
+
+            try
+            {
+                _serialPort.Write(buffer, offset, length);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ошибка: " + ex.Message);
+            }
+
+
+
             Thread.Sleep(WriteTimeout);
         }
     }

@@ -110,7 +110,7 @@ namespace HartProtocol.Models.Base
 
         public void InitializeIdDevice(byte[] buff)
         {
-            if (buff is null) return;
+            if (buff is null || buff.Length==0) return;
 
             for (int i = Array.IndexOf(buff, byte.MaxValue); i < buff.Length; i++)
             {
@@ -122,7 +122,7 @@ namespace HartProtocol.Models.Base
                         try
                         {
                             if (MicroAddress != buff[i + 1])
-                                throw new Exception($"Пришел ответ от {buff[i + 1]} к {MicroAddress}({RequestAddress})"); 
+                                return; 
 
                             var dataLength = buff[i + 3];
                             var checkCrc = CrcXor.Calculate(buff, i, dataLength + 4);

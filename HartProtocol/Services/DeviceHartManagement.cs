@@ -25,6 +25,8 @@ namespace HartProtocol.Services
 
 
         private bool _IsInitialized = false;
+        
+
         public bool IsInitialized
         {
             get => _IsInitialized;
@@ -52,13 +54,36 @@ namespace HartProtocol.Services
         {
             for (int i = 0; i <= __DevicesCount; i++)
             {
-                
-                _Devices[i].ExecuteCommand(new RequestIndificationID_Command(5, FrameType.ShortFrame));
+                Thread.Sleep(200);
+                 _Devices[i].ExecuteCommand(new RequestIndificationID_Command(5, FrameType.ShortFrame));
             }
             _Devices = _Devices.Where(d => d.Adress != null).ToArray();
 
             IsInitialized = _Devices.Length > 0 ? true : false;
         }
 
+        private void InitDev(int count = 5)
+        {
+            _Devices[count].FinishReceived += DeviceHartManagement_FinishReceived;
+            _Devices[count].ExecuteCommand(new RequestIndificationID_Command(5, FrameType.ShortFrame));
+        }
+
+
+        private void DeviceHartManagement_FinishReceived(int obj)
+        {
+            _Devices[obj].FinishReceived -= DeviceHartManagement_FinishReceived;
+
+            if (obj > 16) 
+            {
+                _Devices = _Devices.Where(d => d.Adress != null).ToArray();
+
+                IsInitialized = _Devices.Length > 0 ? true : false;
+
+                return;
+            }
+
+            InitDev(obj++);
+
+        }
     }
 }

@@ -3,6 +3,7 @@ using HartProtocol.Models.Base;
 using HartProtocol.Services;
 using HartProtocol.Services.Interfaces;
 using System;
+using System.Linq;
 
 namespace HartProtocol.Models
 {
@@ -25,19 +26,23 @@ namespace HartProtocol.Models
             System.Threading.Thread.Sleep(10);
         }
 
+        public event Action<int> FinishReceived;
+
         /// <summary>Обработчик входных данных </summary>
         public void Port_DataReceivedChanged(byte[] obj)
         {
-            var fake_Ansver = FakeGenerator();
+            //var fake_Ansver = FakeGenerator();
             switch (_CurrentCommandIndex)
             {
                 case 0:
-                    InitializeIdDevice(fake_Ansver); 
+                    InitializeIdDevice(obj); 
                     break;
                 case 1:
-                    DefinitionPrimaryVariable(obj);
+                    GetPrimaryVariable(obj);
                     break;
             }
+
+            FinishReceived?.Invoke(MicroAddress);
             _Port.DataReceivedChanged -= Port_DataReceivedChanged;
         }
 
@@ -75,10 +80,12 @@ namespace HartProtocol.Models
             set;
         }
 
+        public float PrimaryVariableValue { get; set; }
 
-        public void DefinitionPrimaryVariable(byte[] buff)
+
+        public void GetPrimaryVariable(byte[] buff)
         {
-            buff = FakeGenerator();
+            //buff = FakeGenerator();
             
             if (buff == null || buff.Length == 0 ) return;
 
@@ -88,33 +95,67 @@ namespace HartProtocol.Models
                 {
                     if (buff[i] == 134)
                     {
-                        byte value = buff[17];
-                        if (Enum.IsDefined(typeof(UnitPressure), value))
-                            UnitPrimaryVariable = (UnitPressure)value;
-                        break;
+                        try
+                        {
+                            var startCr = i;
+                            //получаем длинный адресс датчика
+                            var adressReq = new byte[5]
+                            {
+                            buff[i+1],
+                            buff[i+2],
+                            buff[i+3],
+                            buff[i+4],
+                            buff[i+5]
+                            };
+                            if (!AddressVerification(adressReq)) throw new Exception();
+
+                            if (!CommandIndexVerification(buff[i + 6])) throw new Exception();
+
+                            var dataLengt = buff[i + 7];
+                            if (!(CrcXor.Calculate(buff, startCr, dataLengt + 8) != buff[i + 9])) throw new Exception("Не совпала контрольная сумма");
+
+                            //парсинг единицы измерения
+                            byte Unit = buff[i + 10];
+                            if (Enum.IsDefined(typeof(UnitPressure), Unit))
+                                UnitPrimaryVariable = (UnitPressure)Unit;
+                            //парсинг значения первичной переменной
+
+                            byte[] bytes = new byte[4] { buff[i + 11], buff[i + 12], buff[i + 13], buff[i + 14] };
+
+                            PrimaryVariableValue = BitConverter.ToSingle(bytes.Reverse().ToArray(), 0);
+
+                            break;
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Ошибка: " + ex.Message);
+                            return;
+                        }
+
                     }
                 }
             }
-
-            //искать байт начала 
-            //добыть данные и применить их к свойству PrimeryUnit в Device
-            ////"0C FF FF FF FF FF FF 86 2A 0B 6B CF 49 01 07 00 48 0A BC C7 A3 E9 3F"
-            //string id = Convectors.ByteToHex(buff);
         }
         #endregion
 
+        /// <summary> Проверка адреса </summary>
+        private bool AddressVerification(byte[] Adres) 
+        {
+            if(Adres.Length!=5 || Adres.Length==0) return false;
 
-
-
-
-
-
-
-
-
-
-
-
+            var DevBdr = new byte[5];
+            this.GetBytesLongAdress().CopyTo(DevBdr, 0);
+            for (int j = 0; j < 5; j++)
+            {
+                if (Adres[j] != DevBdr[j]) return false;
+            }
+            return true;
+        }
+        //Проверка на индекс команды
+        private bool CommandIndexVerification(byte CommandIndex)
+        {
+            return (_CurrentCommandIndex == CommandIndex);
+        }
 
     }
 }
