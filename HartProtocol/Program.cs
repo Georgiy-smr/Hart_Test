@@ -28,10 +28,13 @@ namespace HartProtocol
 
             while (Manager.Devices.Any()) 
             {
-                Thread.Sleep(500);
+                Thread.Sleep(550);
                 var device = Manager.Devices[0];
                 device.ExecuteCommand(new Cmd_2_ReadCurrentAndPercentOfTheRange(device.ReceivedPreamblesCount, FrameType.LongFrame));
-                //Console.WriteLine($"{DateTime.Now}: {device.PrimaryVariableValue.ToString()} {device.UnitPrimaryVariable}");
+                Thread.Sleep(550);
+                device.ExecuteCommand(new Cmd_3_ReadingFourVariables(device.ReceivedPreamblesCount, FrameType.LongFrame));
+                Console.WriteLine($"{DateTime.Now}: I={device.Current_PV}mA\n1:{device.PrimaryVariableValue}{device.UnitPrimaryVariable}\n2:{device.SecondaryVariable}{device.UnitSecondaryVariable}\n3:{device.TertiaryVariable}{device.UnitTertiaryVariable}\n4:{device.FourthVariable}{device.UnitFourthVariable}\nPercentOfRange:{device.PercentOfTheRange}%");
+
             }
         }
 

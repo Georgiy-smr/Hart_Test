@@ -34,12 +34,14 @@ namespace HartProtocol.Models
             //var fake_Ansver = FakeGenerator();
             switch (_CurrentCommandIndex)
             {
-                case 0:
+                    case 0:
                     InitializeIdDevice(obj);  break;
-                case 1:
+                    case 1:
                     ReadPrimaryVariable(obj); break;
-                case 2:
+                    case 2:
                     ReadCurrentAndPercentOfTheRange(obj); break;
+                    case 3:
+                    ReadingFourVariableAndCurrentPV(obj); break;
             }
 
             FinishReceived?.Invoke(MicroAddress);
@@ -142,13 +144,153 @@ namespace HartProtocol.Models
         /// <summary> Функция чтения параметров тока и процента по команде № 2 </summary>
         public void ReadCurrentAndPercentOfTheRange(byte[] buff)
         {
-            var bytetohex = Convectors.ByteToHex(buff);
+            if (buff == null || buff.Length == 0) return;
+
+            for (int i = Array.IndexOf(buff, byte.MaxValue); i < buff.Length; i++)
+            {
+                if (buff[i] != byte.MaxValue)
+                {
+                    if (buff[i] == 134)
+                    {
+                        try
+                        {
+                            var startCr = i;
+                            var adressReq = new byte[5]
+                            {
+                            buff[i+1],
+                            buff[i+2],
+                            buff[i+3],
+                            buff[i+4],
+                            buff[i+5]
+                            };
+                            if (!AddressVerification(adressReq)) throw new Exception();
+
+                            if (!CommandIndexVerification(buff[i + 6])) throw new Exception();
+
+                            var dataLengt = buff[i + 7];
+                            if (!(CrcXor.Calculate(buff, startCr, dataLengt + 8) != buff[i + 9]))
+                                throw new Exception("Не совпала контрольная сумма");
+
+
+                            //1C FF FF FF FF 86 2A 0B 6B CF 49 02 0A 00 68 40 80 00 00 BB 77 1C D1 EB
+
+                            var bytes_Current = new byte[4] { buff[i + 10], buff[i + 11], buff[i + 12], buff[i + 13] };
+                            Current_PV = BitConverter.ToSingle(bytes_Current.Reverse().ToArray(), 0);
+
+                            var bytes_Percent = new byte[4] { buff[i + 14], buff[i + 15], buff[i + 16], buff[i + 17] };
+                            PercentOfTheRange = BitConverter.ToSingle(bytes_Percent.Reverse().ToArray(), 0);
+
+
+                            break;
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Ошибка: " + ex.Message);
+                            return;
+                        }
+
+                    }
+                }
+            }
+
+
 
         }
 
 
 
 
+        #endregion
+
+        #region 3_CMD
+        /// <summary> Вторичная переменная  </summary>
+        public float SecondaryVariable { get; set; }
+        public UnitPressure UnitSecondaryVariable
+        {
+            get;
+            set;
+        }
+
+        /// <summary> Вторичная переменная  </summary>
+        public float TertiaryVariable { get; set; }
+        public UnitPressure UnitTertiaryVariable { get; set; }
+
+        /// <summary> Четвертая переменная </summary>
+        public float FourthVariable { get; set; }
+        public UnitPressure UnitFourthVariable { get; set; }
+
+        private void ReadingFourVariableAndCurrentPV(byte[] buff)
+        {
+            if (buff == null || buff.Length == 0) return;
+
+            for (int i = Array.IndexOf(buff, byte.MaxValue); i < buff.Length; i++)
+            {
+                if (buff[i] != byte.MaxValue)
+                {
+                    if (buff[i] == 134)
+                    {
+                        try
+                        {
+                            var startCr = i;
+                            var adressReq = new byte[5]
+                            {
+                            buff[i+1],
+                            buff[i+2],
+                            buff[i+3],
+                            buff[i+4],
+                            buff[i+5]
+                            };
+                            if (!AddressVerification(adressReq)) throw new Exception();
+
+                            if (!CommandIndexVerification(buff[i + 6])) throw new Exception();
+
+                            var dataLengt = buff[i + 7];
+                            if (!(CrcXor.Calculate(buff, startCr, dataLengt + 8) != buff[i + 9]))
+                                throw new Exception("Не совпала контрольная сумма");
+
+
+                            //0C FF FF FF FF 86 2A 0B 6B CF 49 03 1A 00 48 40 80 00 00 0A BC 05 45 E2 0A BC 05 45 E2 0A BC 05 45 E2 0A BC 05 45 E2 DB
+
+                            var bytes_Current = new byte[4] { buff[i + 10], buff[i + 11], buff[i + 12], buff[i + 13] };
+                            Current_PV = BitConverter.ToSingle(bytes_Current.Reverse().ToArray(), 0);
+
+
+                            byte Unit_1 = buff[i + 14];
+                            if (Enum.IsDefined(typeof(UnitPressure), Unit_1))
+                                UnitPrimaryVariable = (UnitPressure)Unit_1;
+                            var bytes_PrimaryVariable = new byte[4] { buff[i + 15], buff[i + 16], buff[i + 17], buff[i + 18] };
+                            PrimaryVariableValue = BitConverter.ToSingle(bytes_PrimaryVariable.Reverse().ToArray(), 0);
+
+                            byte Unit_2 = buff[i + 19];
+                            if (Enum.IsDefined(typeof(UnitPressure), Unit_2))
+                                UnitSecondaryVariable = (UnitPressure)Unit_2;
+                            var bytes_SecondaryVariable = new byte[4] { buff[i + 20], buff[i + 21], buff[i + 22], buff[i + 23] };
+                            SecondaryVariable = BitConverter.ToSingle(bytes_SecondaryVariable.Reverse().ToArray(), 0);
+
+                            byte Unit_3 = buff[i + 24];
+                            if (Enum.IsDefined(typeof(UnitPressure), Unit_3))
+                                UnitTertiaryVariable = (UnitPressure)Unit_3;
+                            var bytes_TertiaryVariable = new byte[4] { buff[i + 25], buff[i + 26], buff[i + 27], buff[i + 28] };
+                            TertiaryVariable = BitConverter.ToSingle(bytes_TertiaryVariable.Reverse().ToArray(), 0);
+
+                            byte Unit_4 = buff[i + 29];
+                            if (Enum.IsDefined(typeof(UnitPressure), Unit_4))
+                                UnitFourthVariable = (UnitPressure)Unit_4;
+                            var bytes_FourthVariable = new byte[4] { buff[i + 30], buff[i + 31], buff[i + 32], buff[i + 34] };
+                            FourthVariable = BitConverter.ToSingle(bytes_FourthVariable.Reverse().ToArray(), 0);
+
+                            break;
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Ошибка: " + ex.Message);
+                            return;
+                        }
+
+                    }
+                }
+            }
+        }
         #endregion
     }
 }
