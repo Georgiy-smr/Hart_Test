@@ -69,8 +69,9 @@ namespace HartProtocol.Models.Base
 
         public abstract void ExecuteCommand(CommandConstructor command);
 
-        /// <summary> Формирование короткого адреса (байта) на основании адреса запроса, первичного мастера и вида монополии </summary>
-        internal byte GetByteMicroAdress(bool FirstMaster, bool Monopoly)
+        /// <summary> Формирование короткого адреса (байта) на основании адреса запроса,
+        /// первичного мастера и вида монополии </summary>
+        internal byte GetByteMicroAdress(bool FirstMaster = true, bool Monopoly = false)
         {
             string array = FirstMaster ? 1.ToString() : 0.ToString();
             array += Monopoly ? 1.ToString() : 0.ToString();
@@ -107,7 +108,10 @@ namespace HartProtocol.Models.Base
                 Adress[2]
             };
         }
-
+        /// <summary>
+        /// Инициализирует себя по 0 команде.(Узнаёт производителя, тип, кол-во преамбул, длинный адрес)
+        /// </summary>
+        /// <param name="buff"></param>
         public void InitializeIdDevice(byte[] buff)
         {
             if (buff is null || buff.Length==0) return;
@@ -160,8 +164,26 @@ namespace HartProtocol.Models.Base
                 }
             }
         }
+        
+        /// <summary> Проверка адреса </summary>
+        protected bool AddressVerification(byte[] Adres) 
+        {
+            if(Adres.Length!=5 || Adres.Length==0) return false;
 
- 
+            var DevBdr = new byte[5];
+            this.GetBytesLongAdress().CopyTo(DevBdr, 0);
+            for (int j = 0; j < 5; j++)
+            {
+                if (Adres[j] != DevBdr[j]) return false;
+            }
+            return true;
+        }
+
+        /// <summary> Проверка на индекс команды </summary>
+        protected bool CommandIndexVerification(byte CommandIndex)
+        {
+            return (_CurrentCommandIndex == CommandIndex);
+        }
 
     }
 }

@@ -30,10 +30,7 @@ namespace HartProtocol.HartCommands
     internal class Cmd_1_ReadingThePrimaryVariable : CommandConstructor
     {
         public Cmd_1_ReadingThePrimaryVariable(byte preamblesCount, FrameType frameType) : base(preamblesCount, frameType)
-        {
-        }
+        {}
         public override byte CommandIndex => 1;
-
-        
     }
 }

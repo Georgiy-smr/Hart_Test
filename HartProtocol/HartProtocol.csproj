@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Connection\Serial.cs" />
     <Compile Include="HartCommands\Cmd_1_ReadingThePrimaryVariable.cs" />
+    <Compile Include="HartCommands\Cmd_2_ReadCurrentAndPercentOfTheRange.cs" />
     <Compile Include="HartCommands\RequestIndificationID_Command.cs" />
     <Compile Include="Models\Base\BaseDevice.cs" />
     <Compile Include="Models\Device.cs" />

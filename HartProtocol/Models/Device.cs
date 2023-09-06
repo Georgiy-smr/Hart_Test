@@ -35,11 +35,11 @@ namespace HartProtocol.Models
             switch (_CurrentCommandIndex)
             {
                 case 0:
-                    InitializeIdDevice(obj); 
-                    break;
+                    InitializeIdDevice(obj);  break;
                 case 1:
-                    GetPrimaryVariable(obj);
-                    break;
+                    ReadPrimaryVariable(obj); break;
+                case 2:
+                    ReadCurrentAndPercentOfTheRange(obj); break;
             }
 
             FinishReceived?.Invoke(MicroAddress);
@@ -82,11 +82,8 @@ namespace HartProtocol.Models
 
         public float PrimaryVariableValue { get; set; }
 
-
-        public void GetPrimaryVariable(byte[] buff)
+        public void ReadPrimaryVariable(byte[] buff)
         {
-            //buff = FakeGenerator();
-            
             if (buff == null || buff.Length == 0 ) return;
 
             for (int i = Array.IndexOf(buff, byte.MaxValue); i < buff.Length; i++)
@@ -98,7 +95,6 @@ namespace HartProtocol.Models
                         try
                         {
                             var startCr = i;
-                            //получаем длинный адресс датчика
                             var adressReq = new byte[5]
                             {
                             buff[i+1],
@@ -112,13 +108,12 @@ namespace HartProtocol.Models
                             if (!CommandIndexVerification(buff[i + 6])) throw new Exception();
 
                             var dataLengt = buff[i + 7];
-                            if (!(CrcXor.Calculate(buff, startCr, dataLengt + 8) != buff[i + 9])) throw new Exception("Не совпала контрольная сумма");
+                            if (!(CrcXor.Calculate(buff, startCr, dataLengt + 8) != buff[i + 9])) 
+                                throw new Exception("Не совпала контрольная сумма");
 
-                            //парсинг единицы измерения
                             byte Unit = buff[i + 10];
                             if (Enum.IsDefined(typeof(UnitPressure), Unit))
                                 UnitPrimaryVariable = (UnitPressure)Unit;
-                            //парсинг значения первичной переменной
 
                             byte[] bytes = new byte[4] { buff[i + 11], buff[i + 12], buff[i + 13], buff[i + 14] };
 
@@ -136,26 +131,24 @@ namespace HartProtocol.Models
                 }
             }
         }
+
         #endregion
 
-        /// <summary> Проверка адреса </summary>
-        private bool AddressVerification(byte[] Adres) 
+        #region 2_CMD
+        /// <summary> Ток первичной переменной, мА </summary>
+        public float Current_PV { get; set; }
+        /// <summary>Процент от диапазона, % </summary>
+        public float PercentOfTheRange { get; set; }
+        /// <summary> Функция чтения параметров тока и процента по команде № 2 </summary>
+        public void ReadCurrentAndPercentOfTheRange(byte[] buff)
         {
-            if(Adres.Length!=5 || Adres.Length==0) return false;
+            var bytetohex = Convectors.ByteToHex(buff);
 
-            var DevBdr = new byte[5];
-            this.GetBytesLongAdress().CopyTo(DevBdr, 0);
-            for (int j = 0; j < 5; j++)
-            {
-                if (Adres[j] != DevBdr[j]) return false;
-            }
-            return true;
-        }
-        //Проверка на индекс команды
-        private bool CommandIndexVerification(byte CommandIndex)
-        {
-            return (_CurrentCommandIndex == CommandIndex);
         }
 
+
+
+
+        #endregion
     }
 }
