@@ -26,22 +26,30 @@ namespace HartProtocol
 
             while (!Manager.IsInitialized){ }
 
+            Console.ReadKey();  
+
             while (Manager.Devices.Any()) 
             {
                 Thread.Sleep(550);
                 var device = Manager.Devices[0];
-                device.ExecuteCommand(new Cmd_2_ReadCurrentAndPercentOfTheRange(device.ReceivedPreamblesCount, FrameType.LongFrame));
-                Thread.Sleep(550);
-                device.ExecuteCommand(new Cmd_3_ReadingFourVariables(device.ReceivedPreamblesCount, FrameType.LongFrame));
-                Console.WriteLine($"{DateTime.Now}: I={device.Current_PV}mA\n1:{device.PrimaryVariableValue}{device.UnitPrimaryVariable}\n2:{device.SecondaryVariable}{device.UnitSecondaryVariable}\n3:{device.TertiaryVariable}{device.UnitTertiaryVariable}\n4:{device.FourthVariable}{device.UnitFourthVariable}\nPercentOfRange:{device.PercentOfTheRange}%");
+                Manager.SetNewMicroAddress(device.RequestAddress, 15);
 
+                
+                //var device = Manager.Devices[0];
+                //device.ExecuteCommand(new Cmd_2_ReadCurrentAndPercentOfTheRange(device.ReceivedPreamblesCount, FrameType.LongFrame));
+                //Thread.Sleep(550);
+                //device.ExecuteCommand(new Cmd_3_ReadingFourVariables(device.ReceivedPreamblesCount, FrameType.LongFrame));
+                //Console.WriteLine($"{DateTime.Now}: I={device.Current_PV}mA\n1:{device.PrimaryVariableValue}{device.UnitPrimaryVariable}\n2:{device.SecondaryVariable}{device.UnitSecondaryVariable}\n3:{device.TertiaryVariable}{device.UnitTertiaryVariable}\n4:{device.FourthVariable}{device.UnitFourthVariable}\nPercentOfRange:{device.PercentOfTheRange}%");
+                break;
             }
+            Console.ReadKey();
+            Manager_InitializeStatusChanged(true);
+            Console.ReadKey();
         }
 
         private static void Manager_InitializeStatusChanged(bool result)
         {
             Console.WriteLine($"Success:{Manager.IsInitialized}.\nCount Connected Device:{Manager.Devices.Length}");
-            Console.ReadKey();
             if (Manager.IsInitialized)
             {
                 for (int i = 0; i < Manager.Devices.Length; i++)

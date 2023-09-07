@@ -42,6 +42,9 @@ namespace HartProtocol.Models
                     ReadCurrentAndPercentOfTheRange(obj); break;
                     case 3:
                     ReadingFourVariableAndCurrentPV(obj); break;
+                    case 6:
+                    ReadNewMicroAddress(obj); break;
+
             }
 
             FinishReceived?.Invoke(MicroAddress);
@@ -278,6 +281,53 @@ namespace HartProtocol.Models
                                 UnitFourthVariable = (UnitPressure)Unit_4;
                             var bytes_FourthVariable = new byte[4] { buff[i + 30], buff[i + 31], buff[i + 32], buff[i + 34] };
                             FourthVariable = BitConverter.ToSingle(bytes_FourthVariable.Reverse().ToArray(), 0);
+
+                            break;
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Ошибка: " + ex.Message);
+                            return;
+                        }
+
+                    }
+                }
+            }
+        }
+        #endregion\
+
+        #region 6_CMD
+        private void ReadNewMicroAddress(byte[] buff)
+        {
+            
+            if (buff == null || buff.Length == 0) return;
+
+            for (int i = Array.IndexOf(buff, byte.MaxValue); i < buff.Length; i++)
+            {
+                if (buff[i] != byte.MaxValue)
+                {
+                    if (buff[i] == 134)
+                    {
+                        try
+                        {
+                            var startCr = i;
+                            var adressReq = new byte[5]
+                            {
+                            buff[i+1],
+                            buff[i+2],
+                            buff[i+3],
+                            buff[i+4],
+                            buff[i+5]
+                            };
+                            if (!AddressVerification(adressReq)) throw new Exception();
+
+                            if (!CommandIndexVerification(buff[i + 6])) throw new Exception();
+
+                            var dataLengt = buff[i + 7];
+                            if (!(CrcXor.Calculate(buff, startCr, dataLengt + 8) != buff[i + 9]))
+                                throw new Exception("Не совпала контрольная сумма");
+
+                            RequestAddress = buff[i + 10];
 
                             break;
                         }

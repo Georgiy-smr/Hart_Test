@@ -41,12 +41,14 @@ namespace HartProtocol.Services
         {
             _Devices = Devices.ToArray();
         }
+
+        #region Initialization process....
         public void Initialize()
         {
             if (_Devices != null) return;
             _Devices = new Device[__DevicesCount];
-            _Devices = Enumerable.Range(0, __DevicesCount+1) //adr 0 to 15
-                .Select(i=>new Device(_Port,i)).ToArray();
+            _Devices = Enumerable.Range(0, __DevicesCount + 1) //adr 0 to 15
+                .Select(i => new Device(_Port, i)).ToArray();
 
             new Thread(() => InitializeDevices()).Start();
         }
@@ -55,35 +57,42 @@ namespace HartProtocol.Services
             for (int i = 0; i <= __DevicesCount; i++)
             {
                 Thread.Sleep(200);
-                 _Devices[i].ExecuteCommand(new RequestIndificationID_Command(5, FrameType.ShortFrame));
+                _Devices[i].ExecuteCommand(new RequestIndificationID_Command(5, FrameType.ShortFrame));
             }
             _Devices = _Devices.Where(d => d.Adress != null).ToArray();
 
             IsInitialized = _Devices.Length > 0 ? true : false;
         }
+        #endregion
 
-        private void InitDev(int count = 5)
+        #region Address record....
+        public void SetNewMicroAddress(byte old_microAdress, byte new_microAdress)
         {
-            _Devices[count].FinishReceived += DeviceHartManagement_FinishReceived;
-            _Devices[count].ExecuteCommand(new RequestIndificationID_Command(5, FrameType.ShortFrame));
-        }
+            //проверить существование нашего девайса 
+            var olddev = _Devices.FirstOrDefault(d => d.RequestAddress == old_microAdress);
+            if (olddev == null) return;
+            //защита от перезаписи
+            if (old_microAdress == new_microAdress) return;
+            //проверить что нет устройства под старым адрессом
+            var newdev = _Devices.FirstOrDefault(d => d.RequestAddress == new_microAdress);
+            if (newdev != null) return;
 
+            //формирование адреса
+            var address = new byte[1] { new_microAdress };
 
-        private void DeviceHartManagement_FinishReceived(int obj)
-        {
-            _Devices[obj].FinishReceived -= DeviceHartManagement_FinishReceived;
-
-            if (obj > 16) 
+            //сформировать команду которая будет записывать новый адрес
+            var commandWriteAddress = new Cmd_6_WritingMicroAdress(olddev.ReceivedPreamblesCount, FrameType.LongFrame)
             {
-                _Devices = _Devices.Where(d => d.Adress != null).ToArray();
+                Data = address
+            };
 
-                IsInitialized = _Devices.Length > 0 ? true : false;
-
-                return;
-            }
-
-            InitDev(obj++);
+            olddev.ExecuteCommand(commandWriteAddress);
 
         }
+
+
+
+        #endregion
+
     }
 }
