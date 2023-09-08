@@ -13,8 +13,8 @@ namespace HartProtocol.Models.Base
         {
             get
             {
-                if (_Adress == null) return null;
-                string id = Convectors.ByteToHex(Adress);
+                if (_Adress_Device == null) return null;
+                string id = Convectors.ByteToHex(Adress_Device);
                 string[] idArray = id.Split(new char[] { ' ' });
                 string ID = $"{idArray[0]}{idArray[1]}{idArray[2]}";
                 return Convert.ToInt32(ID, 16).ToString();
@@ -23,23 +23,23 @@ namespace HartProtocol.Models.Base
         /// <summary>
         /// Длинный адрес устройства для формирования команды
         /// </summary>
-        private byte[] _Adress;
+        private byte[] _Adress_Device;
         /// <summary>
         /// Длинный адрес устройства для формирования команды
         /// </summary>
-        public byte[] Adress
+        public byte[] Adress_Device
         {
-            get { return _Adress; }
+            get { return _Adress_Device; }
             set
             {
                 if(value == null)
                 {
-                    _Adress = value;
+                    _Adress_Device = value;
                     return;
                 }
-                _Adress =value;
-                if (value.Length != 3) throw new ArgumentException(nameof(Adress));
-                _Adress = value;
+                _Adress_Device =value;
+                if (value.Length != 3) throw new ArgumentException(nameof(Adress_Device));
+                _Adress_Device = value;
             }
         }
         /// <summary> Короткий адрес для формирования команды </summary>
@@ -97,15 +97,15 @@ namespace HartProtocol.Models.Base
         /// <summary>  Выдаёт 5 байт длинного адреса </summary>
         internal byte[] GetBytesLongAdress(params object[] objects)
         {
-            if(Adress == null) return null;
+            if(Adress_Device == null) return null;
 
             return new byte[5]
             {
                 ReceivedManufacturer,
                 ReceivedType,
-                Adress[0],
-                Adress[1],
-                Adress[2]
+                Adress_Device[0],
+                Adress_Device[1],
+                Adress_Device[2]
             };
         }
         /// <summary>
@@ -153,11 +153,11 @@ namespace HartProtocol.Models.Base
                             ReceivedType = buff[i + 2];
                             ReceivedPreamblesCount = buff[i + 3];
                             var status = buff[i + 8];
-                            Adress = new byte[3] { buff[i + 9], buff[i + 10], buff[i + 11] };
+                            Adress_Device = new byte[3] { buff[i + 9], buff[i + 10], buff[i + 11] };
                         }
                         catch (Exception ex)
                         {
-                            Adress=null;
+                            Adress_Device=null;
                             Console.WriteLine($"Ошибка адреса {RequestAddress} " + ex.Message);
                         }
                     }

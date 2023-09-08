@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Connection\Serial.cs" />
+    <Compile Include="HartCommands\Cmd_14_ReadInfoAboutPrimaryVariable.cs" />
     <Compile Include="HartCommands\Cmd_1_ReadingThePrimaryVariable.cs" />
     <Compile Include="HartCommands\Cmd_2_ReadCurrentAndPercentOfTheRange.cs" />
     <Compile Include="HartCommands\Cmd_3_ReadingFourVariables.cs" />

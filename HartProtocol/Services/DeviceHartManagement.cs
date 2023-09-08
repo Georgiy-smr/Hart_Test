@@ -56,10 +56,11 @@ namespace HartProtocol.Services
         {
             for (int i = 0; i <= __DevicesCount; i++)
             {
-                Thread.Sleep(200);
+                Thread.Sleep(100);
                 _Devices[i].ExecuteCommand(new RequestIndificationID_Command(5, FrameType.ShortFrame));
             }
-            _Devices = _Devices.Where(d => d.Adress != null).ToArray();
+            Thread.Sleep(100);
+            _Devices = _Devices.Where(d => d.Adress_Device != null).ToArray();
 
             IsInitialized = _Devices.Length > 0 ? true : false;
         }

@@ -60,7 +60,7 @@ namespace HartProtocol.Services
                     }
                     break;
                case FrameType.LongFrame:
-                    if(device.Adress == null) 
+                    if(device.Adress_Device == null) 
                         throw new ArgumentException();
 
                     num += 5;

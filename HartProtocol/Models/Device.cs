@@ -44,6 +44,8 @@ namespace HartProtocol.Models
                     ReadingFourVariableAndCurrentPV(obj); break;
                     case 6:
                     ReadNewMicroAddress(obj); break;
+                    case 14:
+                    ReadInfoPrimaryVariable(obj); break;
 
             }
 
@@ -294,7 +296,7 @@ namespace HartProtocol.Models
                 }
             }
         }
-        #endregion\
+        #endregion
 
         #region 6_CMD
         private void ReadNewMicroAddress(byte[] buff)
@@ -328,6 +330,84 @@ namespace HartProtocol.Models
                                 throw new Exception("Не совпала контрольная сумма");
 
                             RequestAddress = buff[i + 10];
+
+                            break;
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Ошибка: " + ex.Message);
+                            return;
+                        }
+
+                    }
+                }
+            }
+        }
+        #endregion
+        #region 14_CMD
+
+        /// <summary> Серийный номер сенсора </summary>
+        public byte[] ID_Sensor { get; set; }
+        /// <summary> единица измерения пределов и минимального интервала сенсора  </summary>
+        public UnitPressure Unit_Sensor { get; set; }
+        /// <summary>
+        /// Верхний предел сенсора 
+        /// </summary>
+        public float UpLimitSensor { get; set; }
+        /// <summary>
+        /// Нижний предел сенсора 
+        /// </summary>
+        public float LowLimitSensor { get; set; }
+        /// <summary>
+        /// Минимальный интервал 
+        /// </summary>
+        public float MinIntervalSensor { get; set; }
+
+        private void ReadInfoPrimaryVariable(byte[] buff)
+        {
+            //18 FF FF FF FF 86 2A 0B 6B CF 49 0E 12 00 48 4D DE 6A 0A 43 CB F1 79 BF 82 86 10 40 6D 50 D8 E3
+            if (buff == null || buff.Length == 0) return;
+
+            for (int i = Array.IndexOf(buff, byte.MaxValue); i < buff.Length; i++)
+            {
+                if (buff[i] != byte.MaxValue)
+                {
+                    if (buff[i] == 134)
+                    {
+                        try
+                        {
+                            var startCr = i;
+                            var adressReq = new byte[5]
+                            {
+                            buff[i+1],
+                            buff[i+2],
+                            buff[i+3],
+                            buff[i+4],
+                            buff[i+5]
+                            };
+                            if (!AddressVerification(adressReq)) throw new Exception();
+
+                            if (!CommandIndexVerification(buff[i + 6])) throw new Exception();
+
+                            var dataLengt = buff[i + 7];
+                            if (!(CrcXor.Calculate(buff, startCr, dataLengt + 8) != buff[i + 9]))
+                                throw new Exception("Не совпала контрольная сумма");
+
+
+                            ID_Sensor = new byte[3] { buff[i + 10], buff[i + 11], buff[i + 12] };
+
+                            var unit_sensor = buff[i + 13];
+                            if (Enum.IsDefined(typeof(UnitPressure), unit_sensor))
+                                Unit_Sensor = (UnitPressure)unit_sensor;
+
+                            var bytes_UpLimit_Sensor = new byte[4] { buff[i + 14], buff[i + 15], buff[i + 16], buff[i + 17] };
+                            UpLimitSensor = BitConverter.ToSingle(bytes_UpLimit_Sensor.Reverse().ToArray(), 0);
+
+                            var bytes_LowLimit_Sensor = new byte[4] { buff[i + 18], buff[i + 19], buff[i + 20], buff[i + 21] };
+                            LowLimitSensor = BitConverter.ToSingle(bytes_LowLimit_Sensor.Reverse().ToArray(), 0);
+
+                            var bytes_MinInterval_Sensor = new byte[4] { buff[i + 22], buff[i + 23], buff[i + 24], buff[i + 25] };
+                            MinIntervalSensor = BitConverter.ToSingle(bytes_MinInterval_Sensor.Reverse().ToArray(), 0);
 
                             break;
                         }

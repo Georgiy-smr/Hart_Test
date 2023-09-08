@@ -26,24 +26,27 @@ namespace HartProtocol
 
             while (!Manager.IsInitialized){ }
 
-            Console.ReadKey();  
-
             while (Manager.Devices.Any()) 
             {
-                Thread.Sleep(550);
-                var device = Manager.Devices[0];
-                Manager.SetNewMicroAddress(device.RequestAddress, 15);
+                //Установка нового адреса
+                //Thread.Sleep(550);
+                //Manager.SetNewMicroAddress(Manager.Devices[0].RequestAddress, 1);
 
-                
-                //var device = Manager.Devices[0];
+                //Проверка команд
                 //device.ExecuteCommand(new Cmd_2_ReadCurrentAndPercentOfTheRange(device.ReceivedPreamblesCount, FrameType.LongFrame));
                 //Thread.Sleep(550);
                 //device.ExecuteCommand(new Cmd_3_ReadingFourVariables(device.ReceivedPreamblesCount, FrameType.LongFrame));
                 //Console.WriteLine($"{DateTime.Now}: I={device.Current_PV}mA\n1:{device.PrimaryVariableValue}{device.UnitPrimaryVariable}\n2:{device.SecondaryVariable}{device.UnitSecondaryVariable}\n3:{device.TertiaryVariable}{device.UnitTertiaryVariable}\n4:{device.FourthVariable}{device.UnitFourthVariable}\nPercentOfRange:{device.PercentOfTheRange}%");
+
+                Manager.Devices[0].ExecuteCommand(new Cmd_14_ReadInfoAboutPrimaryVariable(Manager.Devices[0].ReceivedPreamblesCount, FrameType.LongFrame));
+
                 break;
             }
+            Console.WriteLine("Выдать инфу по сенсору");
             Console.ReadKey();
-            Manager_InitializeStatusChanged(true);
+            if (Manager.Devices.Any())
+            Console.WriteLine($"От {Manager.Devices[0].UpLimitSensor} до {Manager.Devices[0].LowLimitSensor} {Manager.Devices[0].Unit_Sensor}");
+
             Console.ReadKey();
         }
 
@@ -59,7 +62,6 @@ namespace HartProtocol
                     Console.WriteLine($"Преамубулы: {Manager.Devices[i].ReceivedPreamblesCount}");
                     Console.WriteLine($"Заводской номер в строку: {Manager.Devices[i].AdressToString}");
                 }
-                Console.ReadKey();
             }
 
         }
