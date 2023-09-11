@@ -48,6 +48,8 @@
     <Compile Include="HartCommands\Cmd_1_ReadingThePrimaryVariable.cs" />
     <Compile Include="HartCommands\Cmd_2_ReadCurrentAndPercentOfTheRange.cs" />
     <Compile Include="HartCommands\Cmd_3_ReadingFourVariables.cs" />
+    <Compile Include="HartCommands\Cmd_43_SetPrimaryToZERO.cs" />
+    <Compile Include="HartCommands\Cmd_44_WriteUnitPrimaryVariable.cs" />
     <Compile Include="HartCommands\Cmd_6_WritingMicroAdress.cs" />
     <Compile Include="HartCommands\RequestIndificationID_Command.cs" />
     <Compile Include="Models\Base\BaseDevice.cs" />

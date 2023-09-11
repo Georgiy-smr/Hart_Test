@@ -67,19 +67,19 @@ namespace HartProtocol.Services
         #endregion
 
         #region Address record....
-        public void SetNewMicroAddress(byte old_microAdress, byte new_microAdress)
+        public void SetNewMicroAddress(byte old_RequestAddress, byte new_RequestAddress)
         {
             //проверить существование нашего девайса 
-            var olddev = _Devices.FirstOrDefault(d => d.RequestAddress == old_microAdress);
+            var olddev = _Devices.FirstOrDefault(d => d.RequestAddress == old_RequestAddress);
             if (olddev == null) return;
             //защита от перезаписи
-            if (old_microAdress == new_microAdress) return;
+            if (old_RequestAddress == new_RequestAddress) return;
             //проверить что нет устройства под старым адрессом
-            var newdev = _Devices.FirstOrDefault(d => d.RequestAddress == new_microAdress);
+            var newdev = _Devices.FirstOrDefault(d => d.RequestAddress == new_RequestAddress);
             if (newdev != null) return;
 
             //формирование адреса
-            var address = new byte[1] { new_microAdress };
+            var address = new byte[1] { new_RequestAddress };
 
             //сформировать команду которая будет записывать новый адрес
             var commandWriteAddress = new Cmd_6_WritingMicroAdress(olddev.ReceivedPreamblesCount, FrameType.LongFrame)
@@ -91,9 +91,55 @@ namespace HartProtocol.Services
 
         }
 
+        #endregion
+
+        #region UnitRecord
+
+        /// <summary> Записывает в устройство желаемые единицы измерения. По адресу запроса</summary>
+        public void SetNewUnitPrimaryVariable(byte RequestAddress, UnitPressure WantUnit)
+        {
+            var device = _Devices.FirstOrDefault(d => d.RequestAddress == RequestAddress);
+            //проверка на существование устройства
+            if (device == null) return;
+
+
+            //достать единицу девайса
+            var unit = new byte[1] { (byte)WantUnit };
+            if (unit[0] == 0) return;
+
+            //создать команду 
+            var commandWriteUnit = new Cmd_44_WriteUnitPrimaryVariable
+                (device.ReceivedPreamblesCount, FrameType.LongFrame)
+            {
+                Data = unit
+            };
+
+            //выполнить команду записи на данный девайс 
+
+            device.ExecuteCommand(commandWriteUnit);
+
+        }
+
+        #endregion
+
+        #region Setting the primary variable to 0
+
+        public void SetPrimatyVariableToZERO(byte RequestAddress)
+        {
+            var device = _Devices.FirstOrDefault(d => d.RequestAddress == RequestAddress);
+            //проверка на существование устройства
+            if (device == null) return;
+
+            device.ExecuteCommand(new Cmd_43_SetPrimaryToZERO(device.ReceivedPreamblesCount, FrameType.LongFrame));
+        }
 
 
         #endregion
+
+
+
+
+
 
     }
 }

@@ -26,21 +26,30 @@ namespace HartProtocol
 
             while (!Manager.IsInitialized){ }
 
+            Manager.SetNewUnitPrimaryVariable(Manager.Devices[0].RequestAddress, UnitPressure.bar);
+
+            Thread.Sleep(550);
+
+            Manager.SetPrimatyVariableToZERO(Manager.Devices[0].RequestAddress);
+
             while (Manager.Devices.Any()) 
             {
-                //Установка нового адреса
+                ////Установка нового адреса
                 //Thread.Sleep(550);
-                //Manager.SetNewMicroAddress(Manager.Devices[0].RequestAddress, 1);
+                //Manager.SetNewMicroAddress(Manager.Devices[0].RequestAddress, 0);
 
                 //Проверка команд
-                //device.ExecuteCommand(new Cmd_2_ReadCurrentAndPercentOfTheRange(device.ReceivedPreamblesCount, FrameType.LongFrame));
-                //Thread.Sleep(550);
-                //device.ExecuteCommand(new Cmd_3_ReadingFourVariables(device.ReceivedPreamblesCount, FrameType.LongFrame));
-                //Console.WriteLine($"{DateTime.Now}: I={device.Current_PV}mA\n1:{device.PrimaryVariableValue}{device.UnitPrimaryVariable}\n2:{device.SecondaryVariable}{device.UnitSecondaryVariable}\n3:{device.TertiaryVariable}{device.UnitTertiaryVariable}\n4:{device.FourthVariable}{device.UnitFourthVariable}\nPercentOfRange:{device.PercentOfTheRange}%");
+                Thread.Sleep(550);
+                Manager.Devices[0].ExecuteCommand(new Cmd_2_ReadCurrentAndPercentOfTheRange(Manager.Devices[0].ReceivedPreamblesCount, FrameType.LongFrame));
+                Thread.Sleep(550);
+                Manager.Devices[0].ExecuteCommand(new Cmd_3_ReadingFourVariables(Manager.Devices[0].ReceivedPreamblesCount, FrameType.LongFrame));
+                Console.WriteLine($"{DateTime.Now}: I={Manager.Devices[0].Current_PV}mA\n1:{Manager.Devices[0].PrimaryVariableValue}{Manager.Devices[0].UnitPrimaryVariable}\n2:{Manager.Devices[0].SecondaryVariable}{Manager.Devices[0].UnitSecondaryVariable}\n3:{Manager.Devices[0].TertiaryVariable}{Manager.Devices[0].UnitTertiaryVariable}\n4:{Manager.Devices[0].FourthVariable}{Manager.Devices[0].UnitFourthVariable}\nPercentOfRange:{Manager.Devices[0].PercentOfTheRange}%");
 
-                Manager.Devices[0].ExecuteCommand(new Cmd_14_ReadInfoAboutPrimaryVariable(Manager.Devices[0].ReceivedPreamblesCount, FrameType.LongFrame));
 
-                break;
+                ////запрос диапазона
+                //Manager.Devices[0].ExecuteCommand(new Cmd_14_ReadInfoAboutPrimaryVariable(Manager.Devices[0].ReceivedPreamblesCount, FrameType.LongFrame));
+
+                
             }
             Console.WriteLine("Выдать инфу по сенсору");
             Console.ReadKey();
