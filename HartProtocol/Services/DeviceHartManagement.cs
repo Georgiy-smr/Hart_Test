@@ -12,21 +12,35 @@ namespace HartProtocol.Services
 {
     public class DeviceHartManagement
     {
+        /// <summary>
+        /// Максимальное количество устройств
+        /// </summary>
         private const int __DevicesCount = 15;
+        /// <summary>
+        /// Массив устройтв
+        /// </summary>
         private Device[] _Devices;
-        public Device[] Devices 
-        {
-            get => _Devices;
-        }
+        /// <summary>
+        /// Свойство Устройств
+        /// </summary>
+        public Device[] Devices => _Devices;
         private IPort _Port;
-
+        /// <summary>
+        /// Делегат на событие завершения инициализации
+        /// </summary>
+        /// <param name="result"></param>
         public delegate void InitializeHandler(bool result);
+        /// <summary>
+        /// Событие завершения инициализации
+        /// </summary>
         public event InitializeHandler InitializeStatusChanged;
-
-
+        /// <summary>
+        /// Свойство Выполнения инициализации
+        /// </summary>
         private bool _IsInitialized = false;
-        
-
+        /// <summary>
+        /// Свойство инициализации 
+        /// </summary>
         public bool IsInitialized
         {
             get => _IsInitialized;
@@ -36,8 +50,13 @@ namespace HartProtocol.Services
                 InitializeStatusChanged?.Invoke(value);
             }
         }
-        public DeviceHartManagement(IPort Port) { _Port = Port; }
-        public DeviceHartManagement(IEnumerable<Device> Devices)
+
+        public DeviceHartManagement(IPort Port)
+        {
+            _Port = Port;
+        }
+        public DeviceHartManagement(IEnumerable<Device> Devices, IPort Port)
+            : this(Port)
         {
             _Devices = Devices.ToArray();
         }
@@ -93,7 +112,7 @@ namespace HartProtocol.Services
 
         #endregion
 
-        #region UnitRecord
+        #region Unit Record
 
         /// <summary> Записывает в устройство желаемые единицы измерения. По адресу запроса</summary>
         public void SetNewUnitPrimaryVariable(byte RequestAddress, UnitPressure WantUnit)
@@ -135,11 +154,5 @@ namespace HartProtocol.Services
 
 
         #endregion
-
-
-
-
-
-
     }
 }

@@ -9,8 +9,8 @@ namespace HartProtocol.Models
 {
     public class Device : BaseDevice
     {
-        public Device(IPort port, int microAdress) :
-            base(port, microAdress)  {}
+        public Device(IPort port, int microAdress)
+            : base(port, microAdress) {}
 
         public override void ExecuteCommand(CommandConstructor command)
         {
@@ -31,7 +31,6 @@ namespace HartProtocol.Models
         /// <summary>Обработчик входных данных </summary>
         public void Port_DataReceivedChanged(byte[] obj)
         {
-            //var fake_Ansver = FakeGenerator();
             switch (_CurrentCommandIndex)
             {
                     case 0:
@@ -81,13 +80,6 @@ namespace HartProtocol.Models
         }
 
         #region 1_CMD
-        public UnitPressure UnitPrimaryVariable
-        {
-            get;
-            set;
-        }
-
-        public float PrimaryVariableValue { get; set; }
 
         public void ReadPrimaryVariable(byte[] buff)
         {
@@ -142,10 +134,6 @@ namespace HartProtocol.Models
         #endregion
 
         #region 2_CMD
-        /// <summary> Ток первичной переменной, мА </summary>
-        public float Current_PV { get; set; }
-        /// <summary>Процент от диапазона, % </summary>
-        public float PercentOfTheRange { get; set; }
         /// <summary> Функция чтения параметров тока и процента по команде № 2 </summary>
         public void ReadCurrentAndPercentOfTheRange(byte[] buff)
         {
@@ -202,27 +190,9 @@ namespace HartProtocol.Models
 
         }
 
-
-
-
         #endregion
 
         #region 3_CMD
-        /// <summary> Вторичная переменная  </summary>
-        public float SecondaryVariable { get; set; }
-        public UnitPressure UnitSecondaryVariable
-        {
-            get;
-            set;
-        }
-
-        /// <summary> Вторичная переменная  </summary>
-        public float TertiaryVariable { get; set; }
-        public UnitPressure UnitTertiaryVariable { get; set; }
-
-        /// <summary> Четвертая переменная </summary>
-        public float FourthVariable { get; set; }
-        public UnitPressure UnitFourthVariable { get; set; }
 
         private void ReadingFourVariableAndCurrentPV(byte[] buff)
         {
@@ -343,29 +313,13 @@ namespace HartProtocol.Models
                 }
             }
         }
-        #endregion
-        #region 14_CMD
 
-        /// <summary> Серийный номер сенсора </summary>
-        public byte[] ID_Sensor { get; set; }
-        /// <summary> единица измерения пределов и минимального интервала сенсора  </summary>
-        public UnitPressure Unit_Sensor { get; set; }
-        /// <summary>
-        /// Верхний предел сенсора 
-        /// </summary>
-        public float UpLimitSensor { get; set; }
-        /// <summary>
-        /// Нижний предел сенсора 
-        /// </summary>
-        public float LowLimitSensor { get; set; }
-        /// <summary>
-        /// Минимальный интервал 
-        /// </summary>
-        public float MinIntervalSensor { get; set; }
+        #endregion
+
+        #region 14_CMD
 
         private void ReadInfoPrimaryVariable(byte[] buff)
         {
-            //18 FF FF FF FF 86 2A 0B 6B CF 49 0E 12 00 48 4D DE 6A 0A 43 CB F1 79 BF 82 86 10 40 6D 50 D8 E3
             if (buff == null || buff.Length == 0) return;
 
             for (int i = Array.IndexOf(buff, byte.MaxValue); i < buff.Length; i++)

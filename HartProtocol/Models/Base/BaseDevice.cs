@@ -1,4 +1,5 @@
-﻿using HartProtocol.Services;
+﻿using HartProtocol.HartCommands;
+using HartProtocol.Services;
 using HartProtocol.Services.Interfaces;
 using System;
 
@@ -6,9 +7,7 @@ namespace HartProtocol.Models.Base
 {
     abstract public class BaseDevice
     {
-        /// <summary>
-        /// Строковый адрес
-        /// </summary>
+        /// <summary> Адресс в строку из набора байт полученых адресов </summary>
         public string AdressToString
         {
             get
@@ -20,13 +19,10 @@ namespace HartProtocol.Models.Base
                 return Convert.ToInt32(ID, 16).ToString();
             }
         }
-        /// <summary>
-        /// Длинный адрес устройства для формирования команды
-        /// </summary>
+        /// <summary> Длинный адрес устройства для формирования команды </summary>
         private byte[] _Adress_Device;
-        /// <summary>
-        /// Длинный адрес устройства для формирования команды
-        /// </summary>
+
+        /// <summary> Длинный адрес устройства для формирования команды </summary>
         public byte[] Adress_Device
         {
             get { return _Adress_Device; }
@@ -53,6 +49,58 @@ namespace HartProtocol.Models.Base
         public byte ReceivedType { get; private set; }
         /// <summary>Кол-во преамбул для формирования фрейма</summary>
         public byte ReceivedPreamblesCount { get; private set; }
+
+        /// <summary>Единица первичной переменной</summary>
+        public UnitPressure UnitPrimaryVariable
+        {
+            get;
+            set;
+        }
+        /// <summary> Значение первичной переменной </summary>
+        public float PrimaryVariableValue { get; set; }
+
+        /// <summary> Ток первичной переменной, мА </summary>
+        public float Current_PV { get; set; }
+
+        /// <summary>Процент от диапазона, % </summary>
+        public float PercentOfTheRange { get; set; }
+
+        /// <summary> Значения вторичной переменной </summary>
+        public float SecondaryVariable { get; set; }
+
+        /// <summary> Единицы вторичной переменной </summary>
+        public UnitPressure UnitSecondaryVariable
+        {
+            get;
+            set;
+        }   
+        /// <summary> Третьичная переменная  </summary>
+        public float TertiaryVariable { get; set; }
+
+        /// <summary> Единицы третьичной переменной </summary>
+        public UnitPressure UnitTertiaryVariable { get; set; }
+
+        /// <summary>  Единицы четвертой переменной </summary>
+        public UnitPressure UnitFourthVariable { get; set; }   
+        /// <summary> Значения четвертой переменная </summary>
+        public float FourthVariable { get; set; }
+
+        /// <summary> Серийный номер сенсора </summary>
+        public byte[] ID_Sensor { get; set; }
+
+        /// <summary> единица измерения пределов и минимального интервала сенсора  </summary>
+        public UnitPressure Unit_Sensor { get; set; }
+
+         /// <summary> Верхний предел сенсора </summary>
+        public float UpLimitSensor { get; set; }
+
+        /// <summary> Нижний предел сенсора </summary>
+        public float LowLimitSensor { get; set; }
+
+        /// <summary> Минимальный интервал </summary>
+        public float MinIntervalSensor { get; set; }
+
+
         public IPort _Port;
         public BaseDevice(IPort port, int requestAddress)
         {
@@ -64,9 +112,12 @@ namespace HartProtocol.Models.Base
             RequestAddress = (byte)requestAddress;
             _Port = port;
         }
+
+
         /// <summary> Индекс выполняемой текущей команды </summary>
         public byte _CurrentCommandIndex;
 
+        //Выполнить куманду 
         public abstract void ExecuteCommand(CommandConstructor command);
 
         /// <summary> Формирование короткого адреса (байта) на основании адреса запроса,
