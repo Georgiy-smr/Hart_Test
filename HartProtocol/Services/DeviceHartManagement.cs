@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -51,6 +52,10 @@ namespace HartProtocol.Services
             }
         }
 
+        public bool IsReading { get; private set; } = false;
+
+
+        #region CTOR
         public DeviceHartManagement(IPort Port)
         {
             _Port = Port;
@@ -60,6 +65,7 @@ namespace HartProtocol.Services
         {
             _Devices = Devices.ToArray();
         }
+        #endregion
 
         #region Initialization process....
         public void Initialize()
@@ -154,5 +160,44 @@ namespace HartProtocol.Services
 
 
         #endregion
+
+        #region Reading current Variable Devices...
+
+        public void StartUpdateAllVariable()
+        {
+            if (_Devices is null)
+                Initialize();
+
+            IsReading = true;
+            new Thread(() => UpdateVariablesDevice()).Start();
+        }
+
+        public void StopUpdateAllVariable()
+        {
+            IsReading = false;
+        }
+
+        private void UpdateVariablesDevice()
+        {
+            int countDevices = _Devices.Length;
+            int currentDevices = 0;
+            int step =1;
+            while (IsReading)
+            {
+                _Devices[currentDevices].ExecuteCommand(new Cmd_2_ReadCurrentAndPercentOfTheRange(
+                    Devices[currentDevices].ReceivedPreamblesCount, FrameType.LongFrame));
+                Thread.Sleep(550);
+
+                Devices[currentDevices].ExecuteCommand(new Cmd_3_ReadingFourVariables
+                    (Devices[currentDevices].ReceivedPreamblesCount, FrameType.LongFrame));
+                Thread.Sleep(550);
+
+                currentDevices += step;
+                if (currentDevices > countDevices-1) currentDevices = 0;
+            }
+        }
+        #endregion
+
+
     }
 }

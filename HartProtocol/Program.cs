@@ -26,37 +26,13 @@ namespace HartProtocol
 
             while (!Manager.IsInitialized){ }
 
-            Manager.SetNewUnitPrimaryVariable(Manager.Devices[0].RequestAddress, UnitPressure.bar);
+            Manager.StartUpdateAllVariable();
 
-            Thread.Sleep(550);
-
-            Manager.SetPrimatyVariableToZERO(Manager.Devices[0].RequestAddress);
-
-            while (Manager.Devices.Any()) 
+            while (!Manager.IsInitialized)
             {
-                ////Установка нового адреса
-                //Thread.Sleep(550);
-                //Manager.SetNewMicroAddress(Manager.Devices[0].RequestAddress, 0);
-
-                //Проверка команд
-                Thread.Sleep(550);
-                Manager.Devices[0].ExecuteCommand(new Cmd_2_ReadCurrentAndPercentOfTheRange(Manager.Devices[0].ReceivedPreamblesCount, FrameType.LongFrame));
-                Thread.Sleep(550);
-                Manager.Devices[0].ExecuteCommand(new Cmd_3_ReadingFourVariables(Manager.Devices[0].ReceivedPreamblesCount, FrameType.LongFrame));
-                Console.WriteLine($"{DateTime.Now}: I={Manager.Devices[0].Current_PV}mA\n1:{Manager.Devices[0].PrimaryVariableValue}{Manager.Devices[0].UnitPrimaryVariable}\n2:{Manager.Devices[0].SecondaryVariable}{Manager.Devices[0].UnitSecondaryVariable}\n3:{Manager.Devices[0].TertiaryVariable}{Manager.Devices[0].UnitTertiaryVariable}\n4:{Manager.Devices[0].FourthVariable}{Manager.Devices[0].UnitFourthVariable}\nPercentOfRange:{Manager.Devices[0].PercentOfTheRange}%");
-
-
-                ////запрос диапазона
-                //Manager.Devices[0].ExecuteCommand(new Cmd_14_ReadInfoAboutPrimaryVariable(Manager.Devices[0].ReceivedPreamblesCount, FrameType.LongFrame));
-
-                
+                Console.WriteLine($"Процент: {Manager.Devices[0].PercentOfTheRange = 0}");
             }
-            Console.WriteLine("Выдать инфу по сенсору");
-            Console.ReadKey();
-            if (Manager.Devices.Any())
-            Console.WriteLine($"От {Manager.Devices[0].UpLimitSensor} до {Manager.Devices[0].LowLimitSensor} {Manager.Devices[0].Unit_Sensor}");
 
-            Console.ReadKey();
         }
 
         private static void Manager_InitializeStatusChanged(bool result)
